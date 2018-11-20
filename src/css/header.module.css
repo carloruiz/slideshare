@@ -1,0 +1,26 @@
+.header {
+  background-color: #5873BC;
+  margin: 0;
+  min-height: 50px;
+  height: 5%;
+  display: grid;
+  grid-template-columns: 1em 3em 3em 1em;
+  grid-template-areas: "logo company search login";
+}
+
+.logo {
+  height: 50px;
+}
+
+.company {
+  grid-area: company;
+  color: white;
+}
+
+.search {
+  grid-area: search;
+}
+
+.login {
+  grid-area: login
+}

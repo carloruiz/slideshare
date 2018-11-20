@@ -1,0 +1,18 @@
+
+{% load static %}
+
+<div id="react">
+    Loading...
+</div>
+
+<!--- I could store the props string in a html element (i.e. div id='rect' -->
+{% if props %}
+  <script>
+      window.props = "{{ props|escapejs }}";  
+  </script>
+ 
+  <script src="{% static "logic/home.js" %}"></script>
+
+{% else %}
+  <p>No slides currently available</p>
+{% endif %}
