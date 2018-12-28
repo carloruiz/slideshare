@@ -10,10 +10,10 @@ FROM slide_tag st
 INNER JOIN slide s ON s.id = st.slide_id
 INNER JOIN tag t ON t.id = st.tag_id
 INNER JOIN "user" u ON u.id = s.user_id
-INNER JOIN ( 
+INNER JOIN (
 	SELECT st.tag_id, count(st.tag_id) as counts
 	FROM slide_tag AS st
-	GROUP BY st.tag_id 
+	GROUP BY st.tag_id
 	ORDER BY counts DESC
 ) AS c ON t.id = c.tag_id
 ORDER BY c.counts DESC;'''
@@ -25,7 +25,7 @@ def dictfetchall(cursor):
     result = defaultdict(list)
     ordering = []
     for row in cursor.fetchall():
-        if row[9] not in ordering: ordering.append(row[9])  
+        if row[9] not in ordering: ordering.append(row[9])
         result[row[9]].append(dict(zip(columns, row)))
     return result, ordering
 
@@ -37,11 +37,14 @@ def index(request):
     context = {
         "props": json.dumps({
             "slides": slides,
-            "ordering": ordering 
+            "ordering": ordering
         }, cls=DjangoJSONEncoder),
         "component": "home.js"
     }
-    
+
     return render(request, 'logic/index.html', context)
+
+def login(request):
+    pass
 
 # Create your views here.

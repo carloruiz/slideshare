@@ -7,6 +7,7 @@ module.exports = {
   mode: 'development',
   entry: {
     'home': './src/components/home.jsx',
+    'login': './src/components/login.jsx'
   },
   output: {
     path: path.resolve(__dirname, 'logic/static/logic/'),

@@ -1,26 +1,33 @@
 .header {
   background-color: #5873BC;
-  margin: 0;
+  width: 100%;
   min-height: 50px;
   height: 5%;
-  display: grid;
-  grid-template-columns: 1em 3em 3em 1em;
-  grid-template-areas: "logo company search login";
 }
 
 .logo {
-  height: 50px;
+  display: inline-block;
+  width: 5%;
+  max-height: 50px;
 }
 
 .company {
-  grid-area: company;
+  font-size: 2em;
+  padding-left: 50px;
+  vertical-align: text-bottom;
+  display: inline-block;
+  width: 45%;
+  position: relative;
   color: white;
 }
 
 .search {
-  grid-area: search;
+  display: inline-block;
+  justify-content: right;
+  width: 45%;
 }
 
 .login {
-  grid-area: login
+  display: inline;
+  width: 5%;
 }

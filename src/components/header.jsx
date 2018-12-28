@@ -6,9 +6,15 @@ class Header extends Component {
   render() {
     return (
       <div className={styles.header}>
-        <img className={styles.logo} src="logo.svg"/>
-        <span className={styles.company}> SlideShare </span>
-        <input className={styles.search} type="text" placeholder="Search.."/>
+        <div className={styles.logo}>
+          <img src="logo.svg" height="50px"/>
+        </div>
+        <div className={styles.company}>
+          Slide Share
+        </div>
+        <div className={styles.search}>
+          <input type="text" placeholder="Search.."/>
+        </div>
       </div>
     );
   }
