@@ -9,3 +9,6 @@ Possible improvements:
 config files
 	- webpack.config.js
 	- package.json
+
+TODOs
+	- add unique constraint to url field in slide table

@@ -27,16 +27,25 @@ module.exports = {
         test: /\.jsx$/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader"
+          loader: "babel-loader",
         }
       },
       {
         test: /\.css$/,
-        loaders: [
-          'style-loader?sourceMap',
-          'css-loader?modules&importLoaders=1&localIdentName=[path]___[name]__[local]___[hash:base64:5]'
-        ]
+        loaders: 'style-loader?sourceMap', 
+        options: {
+          sourceMap: true
+        }
       },
-    ]
+      {
+        test: /\.css$/,
+        loaders: 'css-loader',
+        options: {
+          importLoaders: true,
+          modules: true,
+          localIdentName: '[path]___[name]__[local]___[hash:base64:5]'
+        }
+      }
+    ],
   },
 };
