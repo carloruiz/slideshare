@@ -20,17 +20,24 @@ class User_Metadata(models.Model):
     class Meta:
         db_table = 'user_metadata'
 
+# necessary for more fluid upload functionality
+class Slide_id(models.Model):
+    id = models.AutoField(primary_key=True)
+    class Meta:
+        db_table = 'slide_id'
+
 class Slide(models.Model):
     # only stores metadata
-    def upload_path_handler(instance, filename):
-        return "{}/{}".format(instance.user.id, filename)
+    class upload_path_handler():
+        pass
+    id = models.ForeignKey(Slide_id, primary_key=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
     url = models.URLField(max_length=200, unique=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     size = models.CharField(max_length=10) #should it be int?
     description = models.CharField(default='', max_length=500)
     last_mod = models.DateTimeField(default=timezone.now)
-    thumbnail = models.ImageField(upload_to=upload_path_handler) #
+    thumbnail = models.URLField(max_length=200, unique=True) #
     class Meta:
         db_table = 'slide'
 
