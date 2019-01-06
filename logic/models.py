@@ -22,7 +22,7 @@ class User_Metadata(models.Model):
 
 # necessary for more fluid upload functionality
 class Slide_id(models.Model):
-    id = models.AutoField(primary_key=True)
+    id = models.IntegerField(primary_key=True)
     class Meta:
         db_table = 'slide_id'
 
