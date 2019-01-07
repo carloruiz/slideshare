@@ -1,15 +1,15 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.utils import timezone
+from django.db.utils import IntegrityError
+from logic.models import Slide_id, Slide
 
 import subprocess as sp
-from datetime import datetime
-import tempfile
-from pdf2image import convert_from_path
-from logic.models import Slide_id, Slide
-from random import randint
-from django.db.utils import IntegrityError
 import os
+import tempfile
+from datetime import datetime
+from random import randint
+from threading import Lock, Thread
 
 
 FILE_BUCKET = 'https://s3.amazonaws.com/slide-sharing-platform'
@@ -40,6 +40,9 @@ def run_subprocess(args, userid, filename, exception=Exception, timeout=30):
     return 0
 
 def strfmt_bytes(size):
+    # MacOS displays different file size in teriminal vs finder
+    # I chose to display finder size.. To get 'real' size use 
+    # power = 1024
     power = 1000
     n = 0
     Dic_powerN = {0 : '', 1: 'K', 2: 'M', 3: 'G'}
@@ -49,12 +52,17 @@ def strfmt_bytes(size):
     return str(round(size)) + ' ' + Dic_powerN[n]+'B'
 
 
-def upload(userid, filename, resource_name, description):
-    #base thread
-    #save file locally
-    filesize = strfmt_bytes(os.path.getsize('python.pptx'))
 
-    #thread 0
+
+new_id = None
+filesize = None
+new_id = None
+lock = Lock()
+
+def thread1():
+    # TODO upload method with less collisions
+    # lock is only used so other thread sleeps
+    lock.acquire()
     while True:
         try:
             new_id = Slide_id(randint(1,10e5))
@@ -62,19 +70,13 @@ def upload(userid, filename, resource_name, description):
         except IntegrityError as e:
             continue
         break
-    
-    # upload file to aws
-
-    # this var is shared
     resourceid = new_id.id
+    lock.release()
 
-    #thread 1
-    #save locally, convert, upload to aws, 
+    # upload file to aws
+    filesize = strfmt_bytes(os.path.getsize(filename))
 
-    flag = 0
-    idx = filename.rfind('.')
-    name, ext = filename[:idx], filename[idx:]
-
+def thread2():
     with tempfile.TemporaryDirectory() as path:
         args = 'libreoffice --headless --convert-to pdf %s --outdir %s' % (name+ext, path)
         flag = run_subprocess(args.split(), userid, 
@@ -93,6 +95,22 @@ def upload(userid, filename, resource_name, description):
             args = 'aws s3 cp --recursive --quiet {} s3://slide-share-thumbs/{}/{}/'.format(
                 path, userid, resourceid)
             flag = run_subprocess(args.split(), userid, filename, timeout=20)
+
+
+
+def upload(userid, filename, resource_name, description):
+    #base thread
+    #save file locally
+
+    #thread 0
+
+    #thread 1
+    #save locally, convert, upload to aws, 
+
+    flag = 0
+    idx = filename.rfind('.')
+    name, ext = filename[:idx], filename[idx:]
+
        
 
     # after join
