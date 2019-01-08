@@ -1,5 +1,3 @@
-install convertio
-
 Possible improvements:
 	Latency
 	- render js components inside script tags in template
@@ -12,3 +10,5 @@ config files
 
 TODOs
 	- add unique constraint to url field in slide table
+	- change datetime field on Slide table to CharField
+	- change Slide id from IntegerField to CharField

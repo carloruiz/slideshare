@@ -2,12 +2,23 @@ const HtmlWebPackPlugin = require("html-webpack-plugin");
 const path = require('path');
 const webpack = require('webpack');
 
+const babelOptions = {
+    presets: ["@babel/preset-env", "@babel/preset-react"],
+    plugins: [
+      "@babel/plugin-proposal-export-default-from", 
+      ["@babel/plugin-proposal-decorators", {"legacy": true}],
+      "@babel/plugin-proposal-class-properties",
+      "@babel/plugin-syntax-dynamic-import"
+    ]
+  }
+
 
 module.exports = {
   mode: 'development',
   entry: {
     'home': './src/components/home.jsx',
-    'login': './src/components/login.jsx'
+    'login': './src/components/login.jsx',
+    'test': './src/components/test.jsx'
   },
   output: {
     path: path.resolve(__dirname, 'logic/static/logic/'),
@@ -24,11 +35,16 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.jsx$/,
-        exclude: /node_modules/,
-        use: {
-          loader: "babel-loader",
-        }
+        test: /\.js$/,
+        exclude: /node_modules\/(?!(formol)\/).*/,
+        loaders: 'babel-loader',
+        options: babelOptions 
+      },
+      {
+        test:  /\.jsx$/,
+        exclude: /node_modules\/(?!(formol)\/).*/,
+        loaders: 'babel-loader',
+        options: babelOptions
       },
       {
         test: /\.css$/,
@@ -48,4 +64,7 @@ module.exports = {
       }
     ],
   },
+  resolve: {
+    extensions: ['.js', '.jsx']
+  }
 };
