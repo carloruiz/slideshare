@@ -1,6 +1,6 @@
 certifi==2018.10.15
 chardet==3.0.4
-Django==2.1.2
+Django==2.1.11
 idna==2.7
 packaging==18.0
 pathlib==1.0.1
